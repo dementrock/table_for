@@ -5,7 +5,7 @@ module TableHelper
       @callback = @options.delete(:callback)
     end
     def content_for(record)
-      @attr ? @callback.call(record.kind_of?(Hash) ? record[@attr] : record.send(@attr)) : @callback.call(record)
+      @callback.call(record)
     end
   end
 end
