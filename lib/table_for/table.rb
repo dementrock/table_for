@@ -13,6 +13,7 @@ module TableHelper
       # stripes (cycling)
       @stripes = options.delete(:stripes) || []
       @stripes.extend CoreEx::ArrayIterator
+      @klass = options.delete(:class)
     end
 
     def columns(*args)
@@ -35,9 +36,9 @@ module TableHelper
 
       if block_given?
         col_options[:callback] = block
-        @columns << (res = CallbackColumn.new(@template, @records, attr, col_options))
+        @columns << (res = CallbackColumn.new(@template, @records, @klass, attr, col_options))
       elsif attr
-        @columns << (res = SimpleColumn.new(@template, @records, attr, col_options))
+        @columns << (res = SimpleColumn.new(@template, @records, @klass, attr, col_options))
       else
         raise ArgumentError, "Attribute name or block should be given"
       end

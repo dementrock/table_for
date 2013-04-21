@@ -3,15 +3,15 @@ module TableHelper
     attr_reader :title, :html
     delegate :content_tag, :to => :@template
 
-    def initialize(template, records, obj, ops={})
+    def initialize(template, records, klass, obj, ops={})
       @template, @attr, @options = template, obj, ops
-
+      @klass = klass || records[0].class
       @title = if @options[:title]
         @options.delete(:title)
       elsif @attr.nil?
         "&nbsp;"
-      elsif records[0].class.respond_to?(:human_attribute_name)
-        records[0].class.human_attribute_name(@attr.to_s)
+      elsif @klass.respond_to?(:human_attribute_name)
+        @klass.human_attribute_name(@attr.to_s)
       elsif @attr.to_s.respond_to?(:humanize)
         @attr.to_s.humanize
       else
